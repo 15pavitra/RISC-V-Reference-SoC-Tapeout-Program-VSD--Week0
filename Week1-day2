@@ -1,1 +1,164 @@
 
+Day 2: Timing Libraries, Synthesis Approaches, and Efficient Flip-Flop Coding
+Welcome to Day 2 of the RTL Workshop. This day covers three crucial topics:
+
+Understanding the .lib timing library (sky130_fd_sc_hd__tt_025C_1v80.lib) used in open-source PDKs.
+Comparing hierarchical vs. flat synthesis methods.
+Exploring efficient coding styles for flip-flops in RTL design.
+Contents
+Timing Libraries
+
+SKY130 PDK Overview
+Decoding tt_025C_1v80 in the SKY130 PDK
+Opening and Exploring the .lib File
+Hierarchical vs. Flattened Synthesis
+
+Hierarchical Synthesis
+Flattened Synthesis
+Key Differences
+Flip-Flop Coding Styles
+
+Asynchronous Reset D Flip-Flop
+Asynchronous Set D Flip-Flop
+Synchronous Reset D Flip-Flop
+Asynchronous Reset and Synchronous Reset D Flip-Flop
+Simulation and Synthesis Workflow
+
+Icarus Verilog Simulation
+Synthesis with Yosys
+Files in this Directory
+
+Timing Libraries
+SKY130 PDK Overview
+The SKY130 PDK is an open-source Process Design Kit based on SkyWater Technology's 130nm CMOS technology. It provides essential models and libraries for integrated circuit (IC) design, including timing, power, and process variation information.
+
+SKY130 PDK Overview
+
+Decoding tt_025C_1v80 in the SKY130 PDK
+tt: Typical process corner.
+025C: Represents a temperature of 25°C, relevant for temperature-dependent performance.
+1v80: Indicates a core voltage of 1.8V.
+This naming convention clarifies which process, voltage, and temperature conditions the library models.
+
+Opening and Exploring the .lib File
+To open the sky130_fd_sc_hd__tt_025C_1v80.lib file:
+
+Install a text editor:
+
+sudo apt install gedit
+Open the file:
+
+gedit sky130_fd_sc_hd__tt_025C_1v80.lib
+The library contains timing information for all standard cells in the technology library, including setup time, hold time, and propagation delays.
+
+Hierarchical vs. Flattened Synthesis
+Understanding Sub-module Synthesis
+When working with complex designs, synthesis tools can handle modules in different ways. The choice between synthesizing individual sub-modules versus the entire design impacts optimization, debugging, and design flow.
+
+Synthesize Sub-module of a Module
+
+Hierarchical Synthesis
+Definition: Retains the module hierarchy as defined in RTL, synthesizing modules separately.
+How it Works: Tools like Yosys process each module independently, using commands such as hierarchy to analyze and set up the design structure.
+Advantages:
+
+Faster synthesis time for large designs.
+Improved debugging and analysis due to maintained module boundaries.
+Modular approach, aiding integration with other tools.
+Disadvantages:
+
+Cross-module optimizations are limited.
+Reporting can require additional configuration.
+Example: See multiple_modules_heir.v for hierarchical synthesis output.
+
+Hierarchical Structure
+
+Multiple Modules Synthesized Verilog Hierarchical
+
+Flattened Synthesis
+Definition: Merges all modules into a single flat netlist, eliminating hierarchy.
+How it Works: The flatten command in Yosys collapses the hierarchy, allowing whole-design optimizations.
+Advantages:
+
+Enables aggressive, cross-module optimizations.
+Results in a unified netlist, sometimes simplifying downstream processes.
+Disadvantages:
+
+Longer runtime for large designs.Flip-flops are fundamental sequential elements in digital design, used to store binary data. Below are efficient coding styles for different reset/set behaviors.
+
+Asynchronous Reset D Flip-Flop
+File: asyncres_dff.v
+
+module dff_asyncres (input clk, input async_reset, input d, output reg q);
+  always @ (posedge clk, posedge async_reset)
+    if (async_reset)
+      q <= 1'b0;
+    else
+      q <= d;
+endmodule
+Asynchronous reset: Overrides clock, setting q to 0 immediately.
+Edge-triggered: Captures d on rising clock edge if reset is low.
+Asynchronous Set D Flip-Flop
+File: asyncset_dff.v
+
+module dff_async_set (input clk, input async_set, input d, output reg q);
+  always @ (posedge clk, posedge async_set)
+    if (async_set)
+      q <= 1'b1;
+    else
+      q <= d;
+endmodule
+Asynchronous set: Overrides clock, setting q to 1 immediately.
+Synchronous Reset D Flip-Flop
+File: dff_syncres.v
+
+module dff_syncres (input clk, input sync_reset, input d, output reg q);
+  always @ (posedge clk)
+    if (sync_reset)
+      q <= 1'b0;
+    else
+      q <= d;
+endmodule
+Synchronous reset: Takes effect only on the clock edge.
+Loss of hierarchy complicates debugging and reporting.
+Can increase memory usage and netlist complexity.
+Example: See multiple_modules_flat.v for flattened synthesis output.
+
+Flattened Structure Multiple Modules
+
+Important: Hierarchical synthesis maintains sub-modules in the design, while flattening produces a netlist from the ground up.
+
+File: asyncres_syncres.v
+
+module dff_asyncres_syncres (input clk, input async_reset, input sync_res, input d, output reg q);
+  always @ (posedge clk, posedge async_reset)
+    if (async_reset)
+      q <= 1'b0;
+    else if (sync_reset)
+      q <= 1'b0;
+    else
+      q <= d;
+endmodule
+Hybrid approach: Combines both asynchronous and synchronous reset capabilities.
+Simulation and Synthesis Workflow
+Icarus Verilog Simulation
+Compile:Summary
+This workshop day provides practical insights into timing libraries, synthesis strategies, and reliable coding practices for flip-flops. The provided Verilog files demonstrate different flip-flop implementations, while the synthesis outputs show the impact of hierarchical versus flattened approaches. Continue experimenting with these concepts to deepen your understanding of RTL design and synthesis.
+
+Key Takeaways
+Library Understanding: The SKY130 PDK provides comprehensive timing models for 130nm CMOS technology
+Synthesis Trade-offs: Choose between hierarchical (faster, modular) and flattened (optimized) synthesis based on design requirements
+Reset Strategies: Select appropriate reset mechanisms (async, sync, or hybrid) based on timing requirements and design constraints
+Verification Importance: Always simulate before synthesis and verify synthesized netlists match expected
+
+iverilog dff_asyncres.v tb_dff_asyncres.v
+Run:
+
+./a.out
+View Waveform:
+
+gtkwave tb_dff_asyncres.vcd
+
+
+
+
