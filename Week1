@@ -1,0 +1,51 @@
+Day 1: Introduction to Verilog RTL Design & Synthesis
+Welcome to my Day 1 RTL Workshop report!
+Today, I embarked on my journey into digital design by learning Verilog, open-source simulation with Icarus Verilog (iverilog), and the basics of logic synthesis using Yosys. This report documents my practical labs, key learnings, and hands-on experiences as I built a strong foundation in RTL design.
+
+📚 Table of Contents
+What I Learned: Simulator, Design, and Testbench
+Getting Started with iverilog
+My Lab Experience: Simulating a 2-to-1 Multiplexer
+My Verilog Code Analysis
+Introduction to Yosys & Gate Libraries
+Understanding .lib Files and Gate Flavors
+My Synthesis Lab with Yosys
+Verification of My Synthesis
+Summary of My Learning
+1. What I Learned: Simulator, Design, and Testbench
+🔧 Simulator
+Through my studies, I learned that a simulator is a software tool that checks digital circuit functionality by applying test inputs and viewing outputs. This helps me verify my design before hardware implementation.
+
+🎯 Design
+I discovered that the design is my Verilog code describing the intended logic functionality - the behavioral representation of the required specification.
+
+🧪 Testbench
+I understood that a testbench is a simulation environment that applies various inputs to my design and checks if the outputs are correct.
+iverilog is an open-source simulator for Verilog that I used throughout my lab. Here's the simulation flow I followed:
+
+My Design (RTL) + My Testbench → iverilog → Executable → VCD file → GTKWave
+I learned that both my design and testbench are provided as input to iverilog, and the simulator produces a .vcd file for waveform viewing in GTKWave.
+
+3. My Lab Experience: Simulating a 2-to-1 Multiplexer
+I successfully simulated a 2-to-1 multiplexer using iverilog! Here's how I did it:
+
+Step 1: Setting Up My Environment
+# I installed the required tools
+sudo apt install iverilog
+sudo apt install gtkwave
+Step 2: Running My Simulation
+# I compiled my design and testbench
+iverilog good_mux.v tb_good_mux.v
+
+# I ran the simulation
+./a.out
+
+# I viewed the waveform in GTKWave
+gtkwave tb_good_mux.vcd
+My Simulation Results
+I captured my simulation waveform and saved it as gtkwave_good_mux_simulation.png. The waveform clearly showed:
+
+The select signal sel toggling every 75 time units
+Input i0 toggling every 10 time units
+Input i1 toggling every 55 time units
+Output y correctly following the multiplexer logic
