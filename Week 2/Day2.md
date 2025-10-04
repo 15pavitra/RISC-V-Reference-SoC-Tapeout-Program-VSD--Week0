@@ -85,13 +85,6 @@ src/module/testbench.v output/synthesized/vsdbabysoc.synth.v
 cd output/post_synth_sim
 ./post_synth_sim.out
 
-🛠️ Troubleshooting / Notes
-
-Module Redefinition: Ensure modules are included only once.
-
-Path Issues: Verify paths specified with -I are correct.
-
-Commands are prepared; full waveform generation and RTL validation to be done later.
 
 📦 Day 2 Deliverables
 
