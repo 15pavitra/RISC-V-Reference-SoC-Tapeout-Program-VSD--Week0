@@ -1,0 +1,32 @@
+Post-Synthesis GLS & STA Fundamentals
+Objective
+
+Perform Gate-Level Simulation (GLS) after synthesis.
+
+Validate functionality of BabySoC design post-synthesis.
+
+Learn the basics of Static Timing Analysis (STA) using OpenSTA.
+
+Part 1 – Gate-Level Simulation (GLS)
+
+GLS verifies the synthesized netlist (vsdbabysoc.synth.v).
+
+Timing information is annotated using SDF files to ensure real-world correctness.
+
+Waveforms are analyzed with GTKWave to check module interactions (RISC-V processor, PLL, DAC).
+
+Detects glitches, race conditions, or metastability issues not visible at RTL level.
+
+Part 2 – Fundamentals of STA (Static Timing Analysis)
+
+STA analyzes timing paths of a design without simulation.
+
+Focus Areas:
+
+Setup and Hold Checks: Ensure signals arrive within valid windows relative to clock edges.
+
+Slack: Positive slack indicates safe timing; negative slack indicates violations.
+
+Clock Definitions: Period, duty cycle, and multiple clock domains affect timing analysis.
+
+Path-Based Analysis: Evaluates individual paths to identify worst-case delays.
